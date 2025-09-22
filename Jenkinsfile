@@ -35,14 +35,15 @@ pipeline {
             }
         }
 
-        stage('Deploy Container') {
-            steps {
-                sh '''
-                    docker rm -f con8 || true
-                    docker run -d --name con8 -p 8008:8080 ${IMAGE_NAME}:${IMAGE_TAG}
-                '''
-            }
-        }
+       stage('Deploy Container') {
+    steps {
+        sh """
+            docker rm -f con8 || true
+            docker run -d --name con8 -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
+        """
+    }
+}
+
         
     }
 }

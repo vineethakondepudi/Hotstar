@@ -56,7 +56,7 @@ pipeline {
             steps {
                 withMaven(
                     globalMavenSettingsConfig: 'settings.xml',  // Jenkins managed settings.xml
-                    maven: 'maven3',                           // Must match Global Tool name in Jenkins
+                    maven: 'manen3',                           // Must match Global Tool name in Jenkins
                     traceability: true
                 ) {
                     sh 'mvn deploy'

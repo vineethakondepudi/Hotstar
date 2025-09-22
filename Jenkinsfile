@@ -4,6 +4,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = 'dockerhub-creds'   // Jenkins credentials ID
         IMAGE_NAME = 'vineethakondepudi/hotstar'
         IMAGE_TAG = '${BUILD_NUMBER}'
+     HOST_PORT = '8008'
+    CONTAINER_PORT = '8080'
     }
     stages {
               stage('Build WAR') {
@@ -38,8 +40,8 @@ pipeline {
        stage('Deploy Container') {
     steps {
         sh """
-            docker rm -f con8 || true
-            docker run -d --name con8 -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
+            docker rm -f hotstar || true
+            docker run -d --name hotstar -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
         """
     }
 }

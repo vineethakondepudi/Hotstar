@@ -45,7 +45,7 @@ pipeline {
         """
     }
 }
-   stage('Deploy Container') {
+   stage('Deploy to Nexus') {
     steps {
         sh """
            withMaven(globalMavenSettingsConfig: 'settings.xml', maven: 'manen3', traceability: true) {

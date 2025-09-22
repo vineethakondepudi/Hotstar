@@ -52,14 +52,17 @@
 	</pluginRepositories>
 	
 <distributionManagement>
-        <repository>
-            <id>maven-releases</id>
-            <url>http://3.108.223.126:8081/repository/maven-releases/</url>    --> give accorning to urs
-        </repository>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <url>http://3.108.223.126:8081/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <repository>
+        <id>maven-releases</id>
+        <url>http://3.108.223.126:8081/repository/maven-releases/</url>
+        <!-- Replace with your Nexus release repository URL -->
+    </repository>
+    <snapshotRepository>
+        <id>maven-snapshots</id>
+        <url>http://3.108.223.126:8081/repository/maven-snapshots/</url>
+        <!-- Replace with your Nexus snapshot repository URL -->
+    </snapshotRepository>
+</distributionManagement>
+
 	
 </project>

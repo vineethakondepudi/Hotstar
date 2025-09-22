@@ -45,7 +45,15 @@ pipeline {
         """
     }
 }
-
+   stage('Deploy Container') {
+    steps {
+        sh """
+           withMaven(globalMavenSettingsConfig: 'settings.xml', maven: 'manen3', traceability: true) {
+    mvn deploy
+}
+        """
+    }
+}
         
     }
 }

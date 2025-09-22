@@ -12,14 +12,15 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh '''
-                    docker rmi -f hotstar:v1 || true
+      stage('Build Docker Image') {
+    steps {
+        sh """
+            docker rmi -f ${IMAGE_NAME}:${IMAGE_TAG} || true
             docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                '''
-            }
-        }
+        """
+    }
+}
+
          stage('Push to DockerHub') {
             steps {
                 script {

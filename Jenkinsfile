@@ -11,6 +11,7 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         HOST_PORT = '8001'
         CONTAINER_PORT = '8080'
+        DOCKERHUB_CREDENTIALS = 'docker_credential'   
     }
 
     stages {

@@ -26,8 +26,8 @@ pipeline {
             steps { withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) { sh 'mvn deploy' } } }
  stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'mvn sonar:sonar'
+                withSonarQubeEnv("sq") {
+                     sh 'mvn clean verify sonar:sonar'
                 }
             }
         }

@@ -51,7 +51,14 @@ pipeline {
                 """
             }
         }
-
+        stage('Deploy to Nexus') { 
+            steps {
+                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
+                    sh 'mvn deploy' 
+                }
+            } 
+        }
+        
         stage('SonarQube Analysis') {
             steps {
                 echo "Running SonarQube analysis..."

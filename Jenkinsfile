@@ -34,17 +34,19 @@ pipeline {
                 """
             }
         }
- stage('Push to DockerHub') { 
-            steps { 
-                script { withCredentials([usernamePassword( credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS" )])
-                        { 
+stage('Push to DockerHub') { 
+    steps { 
+        script {
+            withCredentials([usernamePassword( credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS" )]) { 
                 sh """ 
-                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin docker push ${IMAGE_NAME}:${IMAGE_TAG} docker logout 
-                            """ 
-                        } 
-                       }
-            }
- } 
+                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                docker logout
+                """ 
+            } 
+        }
+    }
+}
 
         stage('Docker Run Container') {
             steps {

@@ -15,11 +15,12 @@ pipeline {
         stage('Build image'){
             steps{
             sh """
-            dcoker rm -f hotstar || true'
+            dcoker rmi -f hotstar1 || true
                 docker build -t hotstar .
                     """
             }
         }
+
 
        stage('SonarQube Analysis') {
     steps {

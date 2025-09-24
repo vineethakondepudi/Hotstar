@@ -48,4 +48,31 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv("${SON
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    // It's better to clean & verify first, also make sure POM does NOT have hardcoded localhost
+                    sh 'mvn clean verify sonar:sonar'
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+        success {
+            echo 'Pipeline succeeded.'
+        }
+    }
+}

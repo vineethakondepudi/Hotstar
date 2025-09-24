@@ -11,7 +11,6 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         HOST_PORT = '8001'
         CONTAINER_PORT = '8080'
-        DOCKER_SOCK = '/var/run/docker.sock'
     }
 
     stages {
@@ -35,6 +34,17 @@ pipeline {
                 """
             }
         }
+ stage('Push to DockerHub') { 
+            steps { 
+                script { withCredentials([usernamePassword( credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS" )])
+                        { 
+                sh """ 
+                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin docker push ${IMAGE_NAME}:${IMAGE_TAG} docker logout 
+                            """ 
+                        } 
+                       }
+            }
+ } 
 
         stage('Docker Run Container') {
             steps {
@@ -51,6 +61,7 @@ pipeline {
                 """
             }
         }
+        
         stage('Deploy to Nexus') { 
             steps {
                 withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {

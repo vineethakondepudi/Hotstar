@@ -1,10 +1,14 @@
 
 pipeline {
     agent any
-
+  tools {
+        jdk 'jdk7'        
+        maven 'maven3'      
+    }
     environment {
         HOST_PORT = '8008'
         CONTAINER_PORT = '8080'
+         SONARQUBE_ENV = 'sq'
     }
 
     stages {

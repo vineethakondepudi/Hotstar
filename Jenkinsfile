@@ -15,7 +15,7 @@ pipeline {
         stage('Build image'){
             steps{
             sh """
-            dcoker rmi -f hotstar1 || true
+            docker rmi -f hotstar1 || true
                 docker build -t hotstar .
                     """
             }
@@ -31,7 +31,7 @@ pipeline {
                 -Dsonar.projectName=myapp \
                 -Dsonar.sources=src/main/java \
                 -Dsonar.tests=src/test/java \
-                -Dsonar.host.url=http://65.0.18.45:9000/ \
+                -Dsonar.host.url=http://3.110.162.202:9000/ \
                 -Dsonar.token=$SONAR_TOKEN
             '''
         }

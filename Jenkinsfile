@@ -16,11 +16,18 @@ pipeline {
             steps{
             sh """
             docker rmi -f hotstar1 || true
-                docker build -t hotstar .
+                docker build -t hotstar1 .
                     """
             }
         }
-
+     stage('Docker run container'){
+         steps{
+         sh """
+         docker rm -f jenkins || true
+         docker run -itd --name hotstar -p 8001:8080 hotstar1
+         """
+         }
+     }
 
        stage('SonarQube Analysis') {
     steps {

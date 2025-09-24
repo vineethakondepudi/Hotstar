@@ -8,7 +8,7 @@ pipeline {
     environment {
         HOST_PORT = '8008'
         CONTAINER_PORT = '8080'
-         SONARQUBE_ENV = 'sq'
+         SONARQUBE_ENV = 'SONAR_TOKEN'
     }
 
     stages {

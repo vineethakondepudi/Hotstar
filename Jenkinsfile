@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME = 'hotstar'
+        IMAGE_NAME = 'vineethakondepudi/hotstar1'
         IMAGE_TAG = "${BUILD_NUMBER}"
         HOST_PORT = '8001'
         CONTAINER_PORT = '8080'

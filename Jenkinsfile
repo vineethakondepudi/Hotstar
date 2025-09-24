@@ -12,6 +12,14 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+        stage('Build image'){
+            steps{
+            sh """
+            dcoker rm -f hotstar || true'
+                docker build -t hotstar .
+                    """
+            }
+        }
 
        stage('SonarQube Analysis') {
     steps {

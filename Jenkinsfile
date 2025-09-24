@@ -13,20 +13,22 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
-                    sh '''
-                        mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
-                        -Dsonar.projectKey=myapp \
-                        -Dsonar.projectName=myapp \
-                        -Dsonar.sources=src \
-                        -Dsonar.host.url=http://65.0.18.45:9000/ \
-                        -Dsonar.token=$SONAR_TOKEN
-                    '''
-                }
-            }
+       stage('SonarQube Analysis') {
+    steps {
+        withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
+            sh '''
+                mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
+                -Dsonar.projectKey=myapp \
+                -Dsonar.projectName=myapp \
+                -Dsonar.sources=src/main/java \
+                -Dsonar.tests=src/test/java \
+                -Dsonar.host.url=http://65.0.18.45:9000/ \
+                -Dsonar.token=$SONAR_TOKEN
+            '''
         }
+    }
+}
+
     }
 
     post {

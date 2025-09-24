@@ -25,11 +25,12 @@ pipeline {
         stage('Deploy to Nexus') { 
             steps { withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) { sh 'mvn deploy' } } }
  stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv("sq") {
-                     sh 'mvn clean verify sonar:sonar'
-                }
-            }
+          stage('SonarQube Analysis') {
+    steps {
+        sh 'mvn clean verify sonar:sonar -Dsonar.host.url=http://65.0.18.45:9000 -Dsonar.login=squ_7566eb2cbfcff1ac2e0fbe98588f0a6324516cd1'
+    }
+}
+
         }
 
         stage('Quality Gate') {

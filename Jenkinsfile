@@ -5,6 +5,12 @@ pipeline {
         maven 'maven3'
         jdk 'jdk7'
     }
+    environment{
+    image_name: 'hotstar1'
+    image_tag: "${BUILD_NUMBER}"
+    host_num: '8001'
+    container_num: '8080'           
+    }
 
     stages {
         stage('Maven Build') {
@@ -15,16 +21,16 @@ pipeline {
         stage('Build image'){
             steps{
             sh """
-            docker rmi -f hotstar1 || true
-                docker build -t hotstar1 .
+            docker rmi -f ${image_name}:${image_tag} || true
+                docker build -t ${image_name}:${image_tag} .
                     """
             }
         }
      stage('Docker run container'){
          steps{
          sh """
-         docker rm -f jenkins || true
-         docker run -itd --name hotstar -p 8001:8080 hotstar1
+         docker rm -f hotstar || true
+         docker run -itd --name hotstar -p ${host_num}:${container_num} ${image_name}:${image_tag}
          """
          }
      }

@@ -17,6 +17,13 @@ pipeline {
 
     stages {
 
+        stage('Checkout Code') {
+            steps {
+                echo "Checking out source code..."
+                checkout scm
+            }
+        }
+
         stage('Maven Build') {
             steps {
                 echo "Building Maven project..."
@@ -28,39 +35,32 @@ pipeline {
             steps {
                 echo "Building Docker image ${IMAGE_NAME}:${IMAGE_TAG}..."
                 sh """
-                # Remove old image if exists
                 docker rmi -f ${IMAGE_NAME}:${IMAGE_TAG} || true
-
-                # Build new image
                 docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                 """
             }
         }
-stage('Push to DockerHub') { 
-    steps { 
-        script {
-            withCredentials([usernamePassword( credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS" )]) { 
-                sh """ 
-                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                docker logout
-                """ 
-            } 
+
+        stage('Push to DockerHub') { 
+            steps { 
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKERHUB_CREDENTIALS}", usernameVariable: "DOCKER_USER", passwordVariable: "DOCKER_PASS")]) { 
+                        sh """ 
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker logout
+                        """ 
+                    } 
+                }
+            }
         }
-    }
-}
 
         stage('Docker Run Container') {
             steps {
                 echo "Running container ${IMAGE_NAME}..."
                 sh """
-                # Remove old container if exists
                 docker rm -f ${CONTAINER_NAME} || true
-
-                # Run new container
                 docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
-
-                # Verify container is running
                 docker ps -a
                 """
             }

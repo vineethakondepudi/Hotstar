@@ -65,17 +65,20 @@ pipeline {
                 """
             }
         }
-      stage('Deploy to Kubernetes') {
+     stage('Deploy to Kubernetes') {
     steps {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
-        sh '''
-        export PATH=$PATH:/usr/local/bin
-        /usr/local/bin/kubectl apply -f deployment.yaml
+        sh """
+        # Apply the deployment YAML
+        kubectl apply -f k8s/deployment.yaml
+        
+        # Optional: check pods and services
         kubectl get pods
         kubectl get svc
-        '''
+        """
     }
 }
+
 
         stage('Deploy to Nexus') { 
             steps {

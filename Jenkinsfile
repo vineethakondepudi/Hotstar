@@ -65,16 +65,7 @@ pipeline {
                 """
             }
         }
-        
-        stage('Deploy to Nexus') { 
-            steps {
-                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
-                    sh 'mvn deploy' 
-                }
-            } 
-        }
-        
-        stage('SonarQube Analysis') {
+             stage('SonarQube Analysis') {
             steps {
                 echo "Running SonarQube analysis..."
                 withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
@@ -103,8 +94,14 @@ pipeline {
         """
     }
 }
-
-    }
+        stage('Deploy to Nexus') { 
+            steps {
+                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
+                    sh 'mvn deploy' 
+                }
+            } 
+        }
+            }
 
     post {
         success {

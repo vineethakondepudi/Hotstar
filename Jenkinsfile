@@ -70,7 +70,7 @@ pipeline {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
         sh '''
         export PATH=$PATH:/usr/local/bin
-        kubectl apply -f deployment.yaml
+        /usr/local/bin/kubectl apply -f deployment.yaml
         kubectl get pods
         kubectl get svc
         '''

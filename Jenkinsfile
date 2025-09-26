@@ -65,23 +65,7 @@ pipeline {
                 """
             }
         }
-             stage('SonarQube Analysis') {
-            steps {
-                echo "Running SonarQube analysis..."
-                withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
-                    sh '''
-                    mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
-                    -Dsonar.projectKey=myapp \
-                    -Dsonar.projectName=myapp \
-                    -Dsonar.sources=src/main/java \
-                    -Dsonar.tests=src/test/java \
-                    -Dsonar.host.url=http://3.110.210.127:9000/ \
-                    -Dsonar.token=$SONAR_TOKEN
-                    '''
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
+         stage('Deploy to Kubernetes') {
     steps {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
         sh """
@@ -101,6 +85,23 @@ pipeline {
                 }
             } 
         }
+             stage('SonarQube Analysis') {
+            steps {
+                echo "Running SonarQube analysis..."
+                withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                    mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
+                    -Dsonar.projectKey=myapp \
+                    -Dsonar.projectName=myapp \
+                    -Dsonar.sources=src/main/java \
+                    -Dsonar.tests=src/test/java \
+                    -Dsonar.host.url=http://3.110.210.127:9000/ \
+                    -Dsonar.token=$SONAR_TOKEN
+                    '''
+                }
+            }
+        }
+       
             }
 
     post {

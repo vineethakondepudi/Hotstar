@@ -65,19 +65,18 @@ pipeline {
                 """
             }
         }
-         stage('Deploy to Kubernetes') {
+      stage('Deploy to Kubernetes') {
     steps {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
-        sh """
-        # Apply the deployment YAML
+        sh '''
+        export PATH=$PATH:/usr/local/bin
         kubectl apply -f deployment.yaml
-        
-        # Optional: check pods and services
         kubectl get pods
         kubectl get svc
-        """
+        '''
     }
 }
+
         stage('Deploy to Nexus') { 
             steps {
                 withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {

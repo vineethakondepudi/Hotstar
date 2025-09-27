@@ -70,7 +70,7 @@ pipeline {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
         sh """
         # Apply the deployment YAML
-        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f deployment.yaml
         
         # Optional: check pods and services
         kubectl get pods

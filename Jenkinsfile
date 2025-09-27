@@ -65,19 +65,18 @@ pipeline {
                 """
             }
         }
-     stage('Deploy to Kubernetes') {
+    stage('Deploy to Kubernetes') {
     steps {
         echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
         sh """
-        # Apply the deployment YAML
+        sed -i 's|vineethakondepudi/hotstar1:.*|${IMAGE_NAME}:${IMAGE_TAG}|' k8s/deployment.yaml
         kubectl apply -f k8s/deployment.yaml
-
-        # Optional: check pods and services
         kubectl get pods
         kubectl get svc
         """
     }
 }
+
 
 
         stage('Deploy to Nexus') { 

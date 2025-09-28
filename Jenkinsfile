@@ -59,13 +59,11 @@ stage('Deploy to Kubernetes') {
     steps {
         withAWS(credentials: 'aws-root-creds', region: 'ap-south-1') {
             sh """
-            # Configure kubeconfig for EKS
-            aws eks update-kubeconfig --name hotstar-cluster --region ap-south-1
+            # Correct cluster name is 'vinnu'
+            aws eks update-kubeconfig --name vinnu --region ap-south-1
 
-            # Update image in deployment.yaml
             sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
-            # Deploy to EKS
             kubectl apply -f k8s/deployment.yaml
             kubectl rollout status deployment/hotstar-deployment
             kubectl get pods -o wide
@@ -73,6 +71,7 @@ stage('Deploy to Kubernetes') {
         }
     }
 }
+
         
         stage('Deploy to Nexus') { 
             steps {

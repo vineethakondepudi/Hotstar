@@ -28,33 +28,23 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo "🔍 Running SonarQube analysis..."
-                withSonarQubeEnv('sonarqube') {
-                    withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
-                        sh '''
-                        mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-                        -Dsonar.projectKey=myapp \
-                        -Dsonar.projectName=myapp \
-                        -Dsonar.sources=src/main/java \
-                        -Dsonar.tests=src/test/java \
-                        -Dsonar.host.url=http://43.205.255.133/ \
-                        -Dsonar.token=$SONAR_TOKEN
-                        '''
-                    }
-                }
-            }
-        }
+     stage('SonarQube Analysis') {
+         steps { 
+             echo "Running SonarQube analysis..." 
+             withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
+                 sh ''' mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \ -Dsonar.projectKey=myapp \ -Dsonar.projectName=myapp \ -Dsonar.sources=src/main/java \ -Dsonar.tests=src/test/java \ -Dsonar.host.url=http://13.232.145.228:9000/ \ -Dsonar.token=$SONAR_TOKEN ''' 
+             }
+         }
+     }
+    }
 
-        stage('Deploy to Nexus') {
-            steps {
-                echo "📦 Deploying artifacts to Nexus..."
-                withMaven(globalMavenSettingsConfig: 'settings.xml') {
-                    sh 'mvn deploy -DskipTests'
-                }
-            }
-        }
+   stage('Deploy to Nexus') { 
+       steps {
+           withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
+               sh 'mvn deploy'
+           }
+       }
+   }
 
         stage('Docker Build & Push') {
             steps {

@@ -55,16 +55,23 @@ pipeline {
             }
         }
 
-        stage('Docker Run Container') {
-            steps {
-                echo "Running container ${IMAGE_NAME}..."
-                sh """
-                docker rm -f ${CONTAINER_NAME} || true
-                docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
-                docker ps -a
-                """
-            }
-        }
+     stage('Deploy to Kubernetes') {
+    steps {
+        echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
+        sh """
+        # Update image tag in deployment.yaml
+        sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
+
+        # Apply Kubernetes manifests
+        kubectl apply -f k8s/deployment.yaml
+
+        # Optional: check rollout status
+        kubectl rollout status deployment/hotstar-deployment
+        kubectl get pods -o wide
+        """
+    }
+}
+
         
         stage('Deploy to Nexus') { 
             steps {

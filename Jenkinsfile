@@ -65,21 +65,7 @@ pipeline {
                 """
             }
         }
-    stage('Deploy to Kubernetes') {
-    steps {
-        echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
-        sh """
-        sed -i 's|vineethakondepudi/hotstar1:.*|${IMAGE_NAME}:${IMAGE_TAG}|' k8s/deployment.yaml
-        kubectl apply -f k8s/deployment.yaml
-        kubectl get pods
-        kubectl get svc
-        """
-    }
-}
-
-
-
-        stage('Deploy to Nexus') { 
+           stage('Deploy to Nexus') { 
             steps {
                 withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
                     sh 'mvn deploy' 

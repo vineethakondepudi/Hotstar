@@ -54,23 +54,22 @@ pipeline {
                 }
             }
         }
-
-     stage('Deploy to Kubernetes') {
+stage('Deploy to Kubernetes') {
     steps {
-        echo "Deploying ${IMAGE_NAME}:${IMAGE_TAG} to Kubernetes..."
-        sh """
-        # Update image tag in deployment.yaml
-        sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
+        withAWS(credentials: 'aws-root-creds', region: 'ap-south-1') {
+            sh """
+            # Update image in deployment.yaml
+            sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
-        # Apply Kubernetes manifests
-        kubectl apply -f k8s/deployment.yaml
-
-        # Optional: check rollout status
-        kubectl rollout status deployment/hotstar-deployment
-        kubectl get pods -o wide
-        """
+            # Deploy to EKS
+            kubectl apply -f k8s/deployment.yaml
+            kubectl rollout status deployment/hotstar-deployment
+            kubectl get pods -o wide
+            """
+        }
     }
 }
+
 
         
         stage('Deploy to Nexus') { 

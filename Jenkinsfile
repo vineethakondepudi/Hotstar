@@ -84,7 +84,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo "Running SonarQube analysis..."
-                withCredentials([string(credentialsId: 'new', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
                     sh '''
                     mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
                     -Dsonar.projectKey=myapp \

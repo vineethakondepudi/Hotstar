@@ -91,7 +91,7 @@ stage('Deploy to Kubernetes') {
                     -Dsonar.projectName=myapp \
                     -Dsonar.sources=src/main/java \
                     -Dsonar.tests=src/test/java \
-                    -Dsonar.host.url=http://43.205.255.133:9000/ \
+                    -Dsonar.host.url=http://52.66.232.253:9000/ \
                     -Dsonar.token=$SONAR_TOKEN
                     '''
                 }

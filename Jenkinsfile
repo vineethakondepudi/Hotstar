@@ -57,18 +57,17 @@ pipeline {
 
 stage('Deploy to Kubernetes') {
     steps {
-        withAWS(credentials: 'aws-root-creds', region: 'ap-south-1') {
-            sh """
-            # Correct cluster name is 'vinnu'
-            aws eks update-kubeconfig --name vinnu --region ap-south-1
+       withAWS(credentials: 'aws-root-creds', region: 'ap-south-1') {
+    sh """
+    aws eks update-kubeconfig --name vinnu --region ap-south-1 --kubeconfig /var/lib/jenkins/.kube/config
+    export KUBECONFIG=/var/lib/jenkins/.kube/config
+    sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
+    kubectl apply -f k8s/deployment.yaml
+    kubectl rollout status deployment/hotstar-deployment
+    kubectl get pods -o wide
+    """
+}
 
-            sed -i 's|image: vineethakondepudi/hotstar1:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
-
-            kubectl apply -f k8s/deployment.yaml
-            kubectl rollout status deployment/hotstar-deployment
-            kubectl get pods -o wide
-            """
-        }
     }
 }
 

@@ -99,7 +99,7 @@ stage('Deploy Container') {
                     -Dsonar.projectName=myapp \
                     -Dsonar.sources=src/main/java \
                     -Dsonar.tests=src/test/java \
-                    -Dsonar.host.url=http://3.110.60.187:9000/ \
+                    -Dsonar.host.url=http://65.1.126.132:9000/ \
                     -Dsonar.token=$SONAR_TOKEN
                     '''
                 }

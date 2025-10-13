@@ -91,7 +91,7 @@ pipeline {
                     -Dsonar.projectName=myapp \
                     -Dsonar.sources=src/main/java \
                     -Dsonar.tests=src/test/java \
-                    -Dsonar.host.url=http://52.66.232.253:9000/ \
+                    -Dsonar.host.url=http://3.110.139.107:9000/ \
                     -Dsonar.token=$SONAR_TOKEN
                     '''
                 }

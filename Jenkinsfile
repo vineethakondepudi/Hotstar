@@ -54,6 +54,14 @@ pipeline {
                 }
             }
         }
+stage('Deploy Container') { 
+            steps {
+                sh """
+                    docker rm -f hotstar || true
+                    docker run -d --name hotstar -p ${HOST_PORT}:${CONTAINER_PORT} ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
+        }
 
 // stage('Deploy to Kubernetes') {
 //     steps {

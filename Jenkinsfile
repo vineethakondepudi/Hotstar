@@ -81,38 +81,38 @@ stage('Deploy Container') {
 // }
 
         
-        stage('Deploy to Nexus') { 
-            steps {
-                withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
-                    sh 'mvn deploy' 
-                }
-            } 
-        }
+        // stage('Deploy to Nexus') { 
+        //     steps {
+        //         withMaven(globalMavenSettingsConfig: 'settings.xml', jdk: 'jdk7', traceability: true) {
+        //             sh 'mvn deploy' 
+        //         }
+        //     } 
+        // }
         
-        stage('SonarQube Analysis') {
-            steps {
-                echo "Running SonarQube analysis..."
-                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-                    sh '''
-                    mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
-                    -Dsonar.projectKey=myapp \
-                    -Dsonar.projectName=myapp \
-                    -Dsonar.sources=src/main/java \
-                    -Dsonar.tests=src/test/java \
-                    -Dsonar.host.url=http://65.1.126.132:9000/ \
-                    -Dsonar.token=$SONAR_TOKEN
-                    '''
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         echo "Running SonarQube analysis..."
+        //         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+        //             sh '''
+        //             mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
+        //             -Dsonar.projectKey=myapp \
+        //             -Dsonar.projectName=myapp \
+        //             -Dsonar.sources=src/main/java \
+        //             -Dsonar.tests=src/test/java \
+        //             -Dsonar.host.url=http://65.1.126.132:9000/ \
+        //             -Dsonar.token=$SONAR_TOKEN
+        //             '''
+        //         }
+        //     }
+        // }
     }
 
-    post {
-        success {
-            echo '✅ Build, Docker, and SonarQube stages completed successfully!'
-        }
-        failure {
-            echo '❌ Build failed. Check logs for details.'
-        }
-    }
+    // post {
+    //     success {
+    //         echo '✅ Build, Docker, and SonarQube stages completed successfully!'
+    //     }
+    //     failure {
+    //         echo '❌ Build failed. Check logs for details.'
+    //     }
+    // }
 }

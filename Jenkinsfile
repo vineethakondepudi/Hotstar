@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'maven3'
-        jdk 'jdk7'
-    }
+    // tools {
+    //     maven 'maven3'
+    //     jdk 'jdk7'
+    // }
 
     environment {
         IMAGE_NAME = 'vineethakondepudi/hotstar1'
